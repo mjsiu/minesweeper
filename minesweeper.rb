@@ -4,8 +4,8 @@ class Tile
 
   def initialize(board)
       @board = board
-      @bombed = bombed
-      @flagged = flagged
+      @bombed = false
+      @flagged = false
       @revealed = false
   end
 
@@ -19,11 +19,10 @@ class Tile
   def neighbors(pos)
     possible_neighbors = []
     # it needs to find all of this tile's neighbors
-
-
-
-
-
+    POSSIBLE_MOVES.each do |pos_move|
+      valid_move = [(pos[0] + pos_move[0]), (pos[1] + pos_move[1])]
+      possible_neighbors << valid_move 
+    end
   end
 
 
