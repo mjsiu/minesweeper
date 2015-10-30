@@ -1,3 +1,4 @@
+require 'byebug'
 class Tile
 
   attr_accessor :bombed, :flagged, :revealed, :pos
@@ -16,9 +17,9 @@ class Tile
     @revealed = true
   end
 
-  def flagged
-    @flagged ? @flagged = false : @flagged = true
-  end
+  # def change_flag
+  #   @flagged ? @flagged = false : @flagged = true
+  # end
 
   def inspect
     if revealed == false
@@ -35,9 +36,6 @@ class Tile
       end
     end
 
-  end
-
-  def
   end
 
   def neighbors(pos)
@@ -77,6 +75,7 @@ class Board
 
   def initialize
     @grid = make_grid
+    add_bombs
   end
 
   def make_grid
@@ -87,55 +86,51 @@ class Board
   def fill_grid(empty_grid)
     empty_grid.each_with_index do |row, row_idx|
       row.each_with_index do |col, col_idx|
-        empty_grid[row][col] = Tile.new([row_idx, col_idx], self)
+        empty_grid[row_idx][col_idx] = Tile.new([row_idx, col_idx], self)
       end
     end
   end
 
   def [](pos)
-    row = pos[0]
-    col = pos[1]
-    grid[row][col]
+    x, y = pos
+    grid[x][y]
   end
 
-  def []=(pos,value)
-    row = pos[0]
-    col = pos[1]
-    tile = grid[row][col]
-    tile.value = value
+  def []=(pos, value)
+    x, y = pos
+    grid[x][y] = value
   end
 
   def add_bombs
     #STILL NEEDS TO BE CALLED
     idx = 0
 
-    until idx = 9
+    until idx == 9
+      pos = [rand(0..8), rand(0..8)]
       x = rand(0..8)
       y = rand(0..8)
-      if !grid[x,y].bombed
-        grid[x,y].bombed = true
+      debugger
+      if !grid[x][y].bombed
+        grid[x][y].bombed = true
         idx += 1
       end
+
     end
   end
 
   def render
-    (0..8).each do |row|
-      (0..8).each do |col|
-        p grid[row][col].inspect
+    grid.each_with_index do |row, idx1|
+      line = []
+      row.each_with_index do |col,idx2|
+        line << grid[idx1][idx2].inspect
       end
+      puts line.join(' ')
+      line = []
     end
-
   end
+
 end
 
 if $PROGRAM_NAME == __FILE__
-  test = Board.new
-  test.render
-end
-
-
-
-class Game
-
+  board = Board.new
 end
