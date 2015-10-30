@@ -1,12 +1,12 @@
 class Tile
 
-  attr_accessor :bombed?, :flagged?, :revealed?
+  attr_accessor :bombed, :flagged, :revealed
 
   def initialize(board)
       @board = board
-      @bombed? = bombed?
-      @flagged? = flagged?
-      @revealed? = revealed?
+      @bombed = bombed
+      @flagged = flagged
+      @revealed = revealed
   end
 
 
