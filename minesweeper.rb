@@ -20,6 +20,25 @@ class Tile
     @flagged ? @flagged = false : @flagged = true
   end
 
+  def inspect
+    if revealed == false
+      if flagged == false
+        "*"
+      else
+        "F"
+      end
+    elsif revealed == true
+      if neighbor_bomb_count > 0
+        neighbor_bomb_count.to_s
+      else
+        "_"
+      end
+    end
+
+  end
+
+  def
+  end
 
   def neighbors(pos)
     possible_neighbors = []
@@ -63,11 +82,9 @@ class Board
   def make_grid
     empty_grid = Array.new(9) { Array.new(9) }
     fill_grid(empty_grid)
-
   end
 
   def fill_grid(empty_grid)
-
     empty_grid.each_with_index do |row, row_idx|
       row.each_with_index do |col, col_idx|
         empty_grid[row][col] = Tile.new([row_idx, col_idx], self)
@@ -75,12 +92,49 @@ class Board
     end
   end
 
+  def [](pos)
+    row = pos[0]
+    col = pos[1]
+    grid[row][col]
+  end
 
+  def []=(pos,value)
+    row = pos[0]
+    col = pos[1]
+    tile = grid[row][col]
+    tile.value = value
+  end
 
+  def add_bombs
+    #STILL NEEDS TO BE CALLED
+    idx = 0
 
+    until idx = 9
+      x = rand(0..8)
+      y = rand(0..8)
+      if !grid[x,y].bombed
+        grid[x,y].bombed = true
+        idx += 1
+      end
+    end
+  end
 
+  def render
+    (0..8).each do |row|
+      (0..8).each do |col|
+        p grid[row][col].inspect
+      end
+    end
 
+  end
 end
+
+if $PROGRAM_NAME == __FILE__
+  test = Board.new
+  test.render
+end
+
+
 
 class Game
 
